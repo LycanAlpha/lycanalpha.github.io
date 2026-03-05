@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>LycanAlpha</title>
 
 <style>
@@ -11,17 +13,15 @@ body{
 margin:0;
 font-family:system-ui,Segoe UI,Roboto,sans-serif;
 
-background: linear-gradient(
+background:linear-gradient(
 270deg,
-#0033ff,
-#0066ff,
-#ffffff,
-#ff2a2a,
-#ff0000
+#0b1426,
+#0f1e3a,
+#0b1426
 );
 
-background-size:600% 600%;
-animation:icepop 12s ease infinite;
+background-size:400% 400%;
+animation:bg 12s ease infinite;
 
 color:white;
 display:flex;
@@ -31,7 +31,7 @@ min-height:100vh;
 text-align:center;
 }
 
-@keyframes icepop{
+@keyframes bg{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
@@ -48,8 +48,32 @@ margin-bottom:10px;
 }
 
 .tag{
-opacity:0.9;
-margin-bottom:30px;
+opacity:.9;
+margin-bottom:25px;
+}
+
+.badges{
+margin-top:10px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+margin-bottom:20px;
+}
+
+.badge{
+background:#0f1e3a;
+border:1px solid #1c3a5f;
+padding:6px 12px;
+border-radius:20px;
+font-size:.9rem;
+transition:.2s;
+}
+
+.badge:hover{
+background:#1ec8b6;
+color:#001b1a;
+border-color:#1ec8b6;
 }
 
 .links{
@@ -57,32 +81,52 @@ display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:15px;
-margin-bottom:35px;
+margin-bottom:30px;
 }
 
 a{
 text-decoration:none;
 padding:12px 22px;
 border-radius:10px;
-background:#111827cc;
-border:1px solid #374151;
+background:#0f1e3a;
+border:1px solid #1c3a5f;
 color:white;
 transition:.2s;
 }
 
 a:hover{
-background:#2563eb;
-border-color:#2563eb;
+background:#1ec8b6;
+border-color:#1ec8b6;
+color:#001b1a;
 transform:translateY(-2px);
 }
 
 .panel{
-background:#00000055;
+background:#0b1426cc;
 padding:25px;
 border-radius:12px;
 margin-top:25px;
 line-height:1.8;
-backdrop-filter:blur(6px);
+border:1px solid #1c3a5f;
+}
+
+.banner-area{
+margin-top:35px;
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.banner-area img{
+height:50px;
+opacity:.85;
+transition:.2s;
+}
+
+.banner-area img:hover{
+opacity:1;
+transform:scale(1.05);
 }
 
 .chart{
@@ -90,27 +134,13 @@ margin-top:40px;
 }
 
 .footer{
-margin-top:30px;
+margin-top:35px;
 opacity:.6;
 font-size:.9rem;
 }
-.badges{
-margin-top:15px;
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-}
 
-.badge{
-background:#00000066;
-border:1px solid #374151;
-padding:6px 12px;
-border-radius:20px;
-font-size:0.9rem;
-backdrop-filter:blur(4px);
-}
 </style>
+
 </head>
 
 <body>
@@ -118,34 +148,54 @@ backdrop-filter:blur(4px);
 <div class="container">
 
 <h1>
+
 🐺 LycanAlpha
+
 <a href="https://www.viabtc.com" target="_blank">
 <img src="viabtc.png" style="height:40px;vertical-align:middle;margin-left:10px;">
 </a>
+
 </h1>
+
+
 <div class="badges">
 
 <div class="badge">ViaBTC Volunteer</div>
-
 <div class="badge">Bitcoin Mining</div>
-
 <div class="badge">Open Source</div>
-
 <div class="badge">Python Automation</div>
 
 </div>
+
+
 <div class="tag">
-Crypto mining · Automation · Open source tools<br>
+
+Crypto mining · Automation · Open source tools  
+<br>
 Volunteer / Support staff at ViaBTC
+
 </div>
+
 
 <div class="links">
 
 <a href="https://github.com/LycanAlpha">GitHub</a>
-<a href="https://github.com/LycanAlpha/s19-s21-tools">ASIC Tools</a>
-<a href="https://www.viabtc.com">ViaBTC</a>
-<a href="https://mempool.space">Mempool Explorer</a>
-<a href="https://t.me/">Telegram</a>
+
+<a href="https://github.com/LycanAlpha/s19-s21-tools">
+ASIC Tools
+</a>
+
+<a href="https://www.viabtc.com">
+ViaBTC
+</a>
+
+<a href="https://mempool.space">
+Mempool Explorer
+</a>
+
+<a href="https://t.me/">
+Telegram
+</a>
 
 </div>
 
@@ -153,10 +203,15 @@ Volunteer / Support staff at ViaBTC
 <div class="panel">
 
 <div id="price">BTC Price: loading...</div>
+
 <div id="block">Latest Block: loading...</div>
+
 <div id="mempool">Mempool Size: loading...</div>
+
 <div id="hashrate">Network Hashrate: loading...</div>
+
 <div id="difficulty">Difficulty: loading...</div>
+
 <div id="diff">Next Difficulty Adjustment: loading...</div>
 
 </div>
@@ -164,32 +219,59 @@ Volunteer / Support staff at ViaBTC
 
 <div class="panel">
 
-<b>My Mining Setup</b><br>
+<b>My Mining Setup</b><br><br>
 
-S21 – 200 TH/s<br>
-S19k Pro – 120 TH/s<br>
-Pool: ViaBTC<br>
+Antminer S21 — 200 TH/s<br>
+
+Antminer S19k Pro — 120 TH/s<br>
+
+Pool: ViaBTC
 
 </div>
 
 
 <div class="chart">
+
 <div id="btc_chart"></div>
+
+</div>
+
+
+<div class="banner-area">
+
+<a href="https://www.viabtc.com">
+<img src="viabtc.png">
+</a>
+
+<a href="https://mempool.space">
+<img src="https://mempool.space/resources/images/logo.svg">
+</a>
+
+<a href="https://github.com">
+<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+</a>
+
 </div>
 
 
 <div class="footer">
+
 Powered by GitHub Pages
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 
+
 <script>
 
 new TradingView.widget({
+
 width:"100%",
 height:400,
 symbol:"BITSTAMP:BTCUSD",
@@ -198,55 +280,96 @@ timezone:"Etc/UTC",
 theme:"dark",
 style:"1",
 container_id:"btc_chart"
+
 });
 
 
 async function loadPrice(){
+
 const r=await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
+
 const d=await r.json();
+
 document.getElementById("price").innerText=
+
 "BTC Price: $" + Number(d.data.amount).toLocaleString();
+
 }
+
 
 async function loadBlock(){
+
 const r=await fetch("https://mempool.space/api/blocks/tip/height");
+
 const h=await r.text();
+
 document.getElementById("block").innerText=
+
 "Latest Block: " + h;
+
 }
+
 
 async function loadMempool(){
+
 const r=await fetch("https://mempool.space/api/mempool");
+
 const d=await r.json();
+
 document.getElementById("mempool").innerText=
+
 "Mempool Size: " + (d.vsize/1000000).toFixed(2) + " MB";
+
 }
+
 
 async function loadHashrate(){
+
 const r=await fetch("https://mempool.space/api/v1/mining/hashrate/3d");
+
 const d=await r.json();
+
 document.getElementById("hashrate").innerText=
+
 "Network Hashrate: " + (d.currentHashrate/1e18).toFixed(2) + " EH/s";
+
 }
+
 
 async function loadDifficulty(){
+
 const r=await fetch("https://mempool.space/api/v1/difficulty-adjustment");
+
 const d=await r.json();
+
 document.getElementById("difficulty").innerText=
+
 "Difficulty: " + d.currentDifficulty.toLocaleString();
+
 document.getElementById("diff").innerText=
+
 "Next Difficulty Adjustment: " + d.difficultyChange.toFixed(2) + "%";
+
 }
+
 
 function update(){
+
 loadPrice();
+
 loadBlock();
+
 loadMempool();
+
 loadHashrate();
+
 loadDifficulty();
+
 }
 
+
 update();
+
 setInterval(update,60000);
 
 </script>
