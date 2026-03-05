@@ -10,9 +10,19 @@
 body{
 margin:0;
 font-family:system-ui,Segoe UI,Roboto,sans-serif;
-background:linear-gradient(-45deg,#0b0f19,#111827,#1e293b,#020617);
-background-size:400% 400%;
-animation:bg 12s ease infinite;
+
+background: linear-gradient(
+270deg,
+#0033ff,
+#0066ff,
+#ffffff,
+#ff2a2a,
+#ff0000
+);
+
+background-size:600% 600%;
+animation:icepop 12s ease infinite;
+
 color:white;
 display:flex;
 align-items:center;
@@ -21,14 +31,14 @@ height:100vh;
 text-align:center;
 }
 
-@keyframes bg{
+@keyframes icepop{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
 100%{background-position:0% 50%;}
 }
 
 .container{
-max-width:700px;
+max-width:750px;
 padding:40px;
 }
 
@@ -38,7 +48,7 @@ margin-bottom:10px;
 }
 
 .tag{
-opacity:0.7;
+opacity:0.9;
 margin-bottom:30px;
 }
 
@@ -47,16 +57,18 @@ display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:15px;
+margin-bottom:40px;
 }
 
 a{
 text-decoration:none;
 padding:12px 22px;
 border-radius:10px;
-background:#111827;
+background:#111827cc;
 border:1px solid #374151;
 color:white;
 transition:all .2s ease;
+backdrop-filter: blur(6px);
 }
 
 a:hover{
@@ -65,9 +77,19 @@ border-color:#2563eb;
 transform:translateY(-2px);
 }
 
+.stats{
+background:#00000055;
+padding:20px;
+border-radius:12px;
+margin-top:20px;
+font-size:1.1rem;
+line-height:1.8;
+backdrop-filter:blur(8px);
+}
+
 .footer{
-margin-top:40px;
-opacity:0.5;
+margin-top:30px;
+opacity:0.6;
 font-size:0.9rem;
 }
 
@@ -81,7 +103,8 @@ font-size:0.9rem;
 <h1>🐺 LycanAlpha</h1>
 
 <div class="tag">
-Crypto mining · Automation · Open source tools
+Crypto mining · Automation · Open source tools<br>
+Volunteer / Support staff at ViaBTC
 </div>
 
 <div class="links">
@@ -92,9 +115,25 @@ Crypto mining · Automation · Open source tools
 ASIC Tools
 </a>
 
-<a href="https://t.me/">Telegram</a>
+<a href="https://www.viabtc.com">
+ViaBTC
+</a>
 
-<a href="https://twitter.com/">Twitter</a>
+<a href="https://mempool.space">
+Mempool Explorer
+</a>
+
+<a href="https://t.me/">
+Telegram
+</a>
+
+</div>
+
+<div class="stats">
+
+<div id="price">BTC Price: loading...</div>
+<div id="block">Latest Block: loading...</div>
+<div id="mempool">Mempool Size: loading...</div>
 
 </div>
 
@@ -103,6 +142,57 @@ Powered by GitHub Pages
 </div>
 
 </div>
+
+<script>
+
+async function loadBTCPrice(){
+try{
+const res = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
+const data = await res.json();
+document.getElementById("price").innerText =
+"BTC Price: $" + data.data.amount;
+}catch(e){
+document.getElementById("price").innerText =
+"BTC Price: error loading";
+}
+}
+
+async function loadBlock(){
+try{
+const res = await fetch("https://mempool.space/api/blocks/tip/height");
+const height = await res.text();
+document.getElementById("block").innerText =
+"Latest Block: " + height;
+}catch(e){
+document.getElementById("block").innerText =
+"Latest Block: error loading";
+}
+}
+
+async function loadMempool(){
+try{
+const res = await fetch("https://mempool.space/api/mempool");
+const data = await res.json();
+const mb = (data.vsize / 1000000).toFixed(2);
+
+document.getElementById("mempool").innerText =
+"Mempool Size: " + mb + " MB";
+}catch(e){
+document.getElementById("mempool").innerText =
+"Mempool Size: error loading";
+}
+}
+
+function updateAll(){
+loadBTCPrice();
+loadBlock();
+loadMempool();
+}
+
+updateAll();
+setInterval(updateAll,60000);
+
+</script>
 
 </body>
 </html>
