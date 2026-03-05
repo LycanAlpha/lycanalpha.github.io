@@ -194,8 +194,10 @@ Telegram
 <div id="blocktime">Last Block Time: loading...</div>
 <div id="mempool">Mempool Size: loading...</div>
 <div id="hashrate">Network Hashrate: loading...</div>
+<div id="retarget">Next Retarget: loading...</div>
 <div id="difficulty">Difficulty: loading...</div>
 <div id="diff">Next Difficulty Adjustment: loading...</div>
+<div id="blockage">Last Block Age: loading...</div>
 
 </div>
 
@@ -279,8 +281,16 @@ const blocks=await r.json();
 
 const t=new Date(blocks[0].timestamp*1000);
 
-document.getElementById("blocktime").innerText=
+document.getElementById("blocktime").innerText =
 "Last Block Time: " + t.toLocaleTimeString();
+
+const age = Math.floor((Date.now()/1000) - blocks[0].timestamp);
+
+const minutes = Math.floor(age/60);
+const seconds = age%60;
+
+document.getElementById("blockage").innerText =
+"Last Block Age: "+minutes+"m "+seconds+"s";
 
 }
 
@@ -307,30 +317,32 @@ document.getElementById("hashrate").innerText=
 }
 
 
-async function loadDifficulty(){
+aasync function loadDifficulty(){
 
 try{
 
-const r = await fetch("https://mempool.space/api/v1/mining/hashrate/1d");
+const r = await fetch("https://mempool.space/api/v1/difficulty-adjustment");
 const d = await r.json();
 
-const diff = d.currentDifficulty;
-
 document.getElementById("difficulty").innerText =
-"Difficulty: " + Number(diff).toLocaleString();
+"Difficulty: " + d.previousRetarget.toFixed(2) + " T";
+
+document.getElementById("diff").innerText =
+"Next Difficulty Adjustment: " + d.difficultyChange.toFixed(2) + "%";
+
+const hours = (d.remainingTime/3600).toFixed(1);
+
+document.getElementById("retarget").innerText =
+"Next Retarget: "+d.remainingBlocks+" blocks (~"+hours+"h)";
 
 }catch(e){
 
-document.getElementById("difficulty").innerText =
-"Difficulty: unavailable";
+document.getElementById("difficulty").innerText = "Difficulty: unavailable";
 
 }
 
-}
 }
 async function loadBlocks(){
-
-try{
 
 const r = await fetch("https://mempool.space/api/blocks");
 const blocks = await r.json();
@@ -339,21 +351,13 @@ let html = "";
 
 for(let i=0;i<5;i++){
 
-const height = blocks[i].height;
-const pool = blocks[i].miner || "Unknown Pool";
-
-html += "#" + height + " — " + pool + "<br>";
+html +=
+"#"+blocks[i].height+
+" — "+blocks[i].tx_count+" tx<br>";
 
 }
 
 document.getElementById("blocks").innerHTML = html;
-
-}catch(e){
-
-document.getElementById("blocks").innerHTML =
-"block data unavailable";
-
-}
 
 }
 
