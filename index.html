@@ -1,30 +1,108 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LycanAlpha</title>
+
 <style>
+
 body{
-background:#0b0f19;
+margin:0;
+font-family:system-ui,Segoe UI,Roboto,sans-serif;
+background:linear-gradient(-45deg,#0b0f19,#111827,#1e293b,#020617);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
 color:white;
-font-family:sans-serif;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
 text-align:center;
-margin-top:120px;
 }
-a{color:#58a6ff;text-decoration:none;font-size:20px;}
-a:hover{text-decoration:underline;}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+max-width:700px;
+padding:40px;
+}
+
+h1{
+font-size:3rem;
+margin-bottom:10px;
+}
+
+.tag{
+opacity:0.7;
+margin-bottom:30px;
+}
+
+.links{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+}
+
+a{
+text-decoration:none;
+padding:12px 22px;
+border-radius:10px;
+background:#111827;
+border:1px solid #374151;
+color:white;
+transition:all .2s ease;
+}
+
+a:hover{
+background:#2563eb;
+border-color:#2563eb;
+transform:translateY(-2px);
+}
+
+.footer{
+margin-top:40px;
+opacity:0.5;
+font-size:0.9rem;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>🐺 LycanAlpha</h1>
-<p>Crypto miner • automation goblin • script builder</p>
+<div class="container">
 
-<p>
-<a href="https://github.com/LycanAlpha">GitHub</a><br><br>
-<a href="https://github.com/LycanAlpha/s19-s21-tools">ASIC Tools Repo</a><br><br>
-<a href="#">Telegram</a><br><br>
-<a href="#">Twitter/X</a>
-</p>
+<h1>🐺 LycanAlpha</h1>
+
+<div class="tag">
+Crypto mining · Automation · Open source tools
+</div>
+
+<div class="links">
+
+<a href="https://github.com/LycanAlpha">GitHub</a>
+
+<a href="https://github.com/LycanAlpha/s19-s21-tools">
+ASIC Tools
+</a>
+
+<a href="https://t.me/">Telegram</a>
+
+<a href="https://twitter.com/">Twitter</a>
+
+</div>
+
+<div class="footer">
+Powered by GitHub Pages
+</div>
+
+</div>
 
 </body>
 </html>
