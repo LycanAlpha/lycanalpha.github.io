@@ -49,16 +49,15 @@ margin-bottom:10px;
 
 .tag{
 opacity:.9;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 .badges{
-margin-top:10px;
 display:flex;
 flex-wrap:wrap;
 gap:10px;
 justify-content:center;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .badge{
@@ -105,32 +104,24 @@ transform:translateY(-2px);
 background:#0b1426cc;
 padding:25px;
 border-radius:12px;
-margin-top:25px;
+margin-top:20px;
 line-height:1.8;
 border:1px solid #1c3a5f;
 }
 
-.banner-area{
-margin-top:35px;
-display:flex;
-justify-content:center;
-gap:25px;
-flex-wrap:wrap;
-}
-
-.banner-area img{
-height:50px;
-opacity:.85;
-transition:.2s;
-}
-
-.banner-area img:hover{
-opacity:1;
-transform:scale(1.05);
+.panel div{
+padding:4px 0;
 }
 
 .chart{
 margin-top:40px;
+display:flex;
+justify-content:center;
+}
+
+.blocks{
+margin-top:30px;
+font-family:monospace;
 }
 
 .footer{
@@ -148,15 +139,8 @@ font-size:.9rem;
 <div class="container">
 
 <h1>
-
 🐺 LycanAlpha
-
-<a href="https://www.viabtc.com" target="_blank">
-<img src="viabtc.png" style="height:40px;vertical-align:middle;margin-left:10px;">
-</a>
-
 </h1>
-
 
 <div class="badges">
 
@@ -167,15 +151,12 @@ font-size:.9rem;
 
 </div>
 
-
 <div class="tag">
 
-Crypto mining · Automation · Open source tools  
-<br>
+Crypto mining · Automation · Open source tools<br>
 Volunteer / Support staff at ViaBTC
 
 </div>
-
 
 <div class="links">
 
@@ -199,60 +180,41 @@ Telegram
 
 </div>
 
-
 <div class="panel">
 
 <div id="price">BTC Price: loading...</div>
-
 <div id="block">Latest Block: loading...</div>
-
+<div id="blocktime">Last Block Time: loading...</div>
 <div id="mempool">Mempool Size: loading...</div>
-
 <div id="hashrate">Network Hashrate: loading...</div>
-
 <div id="difficulty">Difficulty: loading...</div>
-
 <div id="diff">Next Difficulty Adjustment: loading...</div>
 
 </div>
-
 
 <div class="panel">
 
 <b>My Mining Setup</b><br><br>
 
 Antminer S21 — 200 TH/s<br>
-
 Antminer S19k Pro — 120 TH/s<br>
-
 Pool: ViaBTC
 
 </div>
 
-
 <div class="chart">
-
 <div id="btc_chart"></div>
-
 </div>
 
+<div class="panel blocks">
 
-<div class="banner-area">
+<b>Latest Blocks</b>
 
-<a href="https://www.viabtc.com">
-<img src="viabtc.png">
-</a>
-
-<a href="https://mempool.space">
-<img src="https://mempool.space/resources/images/logo.svg">
-</a>
-
-<a href="https://github.com">
-<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
-</a>
-
+<div id="blocks">
+loading...
 </div>
 
+</div>
 
 <div class="footer">
 
@@ -260,19 +222,16 @@ Powered by GitHub Pages
 
 </div>
 
-
 </div>
 
 
-
 <script src="https://s3.tradingview.com/tv.js"></script>
-
 
 <script>
 
 new TradingView.widget({
 
-width:"100%",
+width:600,
 height:400,
 symbol:"BITSTAMP:BTCUSD",
 interval:"15",
@@ -287,11 +246,9 @@ container_id:"btc_chart"
 async function loadPrice(){
 
 const r=await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
-
 const d=await r.json();
 
 document.getElementById("price").innerText=
-
 "BTC Price: $" + Number(d.data.amount).toLocaleString();
 
 }
@@ -300,12 +257,23 @@ document.getElementById("price").innerText=
 async function loadBlock(){
 
 const r=await fetch("https://mempool.space/api/blocks/tip/height");
-
 const h=await r.text();
 
 document.getElementById("block").innerText=
-
 "Latest Block: " + h;
+
+}
+
+
+async function loadBlockTime(){
+
+const r=await fetch("https://mempool.space/api/blocks");
+const blocks=await r.json();
+
+const t=new Date(blocks[0].timestamp*1000);
+
+document.getElementById("blocktime").innerText=
+"Last Block Time: " + t.toLocaleTimeString();
 
 }
 
@@ -313,11 +281,9 @@ document.getElementById("block").innerText=
 async function loadMempool(){
 
 const r=await fetch("https://mempool.space/api/mempool");
-
 const d=await r.json();
 
 document.getElementById("mempool").innerText=
-
 "Mempool Size: " + (d.vsize/1000000).toFixed(2) + " MB";
 
 }
@@ -326,11 +292,9 @@ document.getElementById("mempool").innerText=
 async function loadHashrate(){
 
 const r=await fetch("https://mempool.space/api/v1/mining/hashrate/3d");
-
 const d=await r.json();
 
 document.getElementById("hashrate").innerText=
-
 "Network Hashrate: " + (d.currentHashrate/1e18).toFixed(2) + " EH/s";
 
 }
@@ -339,16 +303,31 @@ document.getElementById("hashrate").innerText=
 async function loadDifficulty(){
 
 const r=await fetch("https://mempool.space/api/v1/difficulty-adjustment");
-
 const d=await r.json();
 
 document.getElementById("difficulty").innerText=
-
 "Difficulty: " + d.currentDifficulty.toLocaleString();
 
 document.getElementById("diff").innerText=
-
 "Next Difficulty Adjustment: " + d.difficultyChange.toFixed(2) + "%";
+
+}
+
+
+async function loadBlocks(){
+
+const r=await fetch("https://mempool.space/api/blocks");
+const blocks=await r.json();
+
+let html="";
+
+for(let i=0;i<5;i++){
+
+html+=`#${blocks[i].height} — ${blocks[i].extras.pool.name}<br>`;
+
+}
+
+document.getElementById("blocks").innerHTML=html;
 
 }
 
@@ -356,17 +335,14 @@ document.getElementById("diff").innerText=
 function update(){
 
 loadPrice();
-
 loadBlock();
-
+loadBlockTime();
 loadMempool();
-
 loadHashrate();
-
 loadDifficulty();
+loadBlocks();
 
 }
-
 
 update();
 
