@@ -309,45 +309,71 @@ document.getElementById("hashrate").innerText=
 
 async function loadDifficulty(){
 
+try{
+
 const r = await fetch("https://mempool.space/api/v1/difficulty-adjustment");
 const d = await r.json();
 
-const diffValue = d.currentDifficulty || d.difficulty;
+const difficulty = d.currentDifficulty ?? d.difficulty ?? 0;
 
 document.getElementById("difficulty").innerText =
-"Difficulty: " + Number(diffValue).toLocaleString();
+"Difficulty: " + difficulty.toLocaleString();
 
 document.getElementById("diff").innerText =
-"Next Difficulty Adjustment: " + d.difficultyChange.toFixed(2) + "%";
+"Next Difficulty Adjustment: " +
+(d.difficultyChange ?? 0).toFixed(2) + "%";
+
+}catch(e){
+
+document.getElementById("difficulty").innerText =
+"Difficulty: unavailable";
+
+document.getElementById("diff").innerText =
+"Next Difficulty Adjustment: unavailable";
 
 }
 
+}
 async function loadBlocks(){
+
+try{
 
 const r = await fetch("https://mempool.space/api/blocks");
 const blocks = await r.json();
 
 let html = "";
 
-for(let i = 0; i < 5; i++){
+for(let i=0;i<5;i++){
 
-const blockHeight = blocks[i].height;
+const height = blocks[i].height;
 
-const r2 = await fetch(`https://mempool.space/api/block/${blockHeight}`);
-const blockData = await r2.json();
+let pool = "Unknown Pool";
 
-const pool = blockData.extras && blockData.extras.pool
-? blockData.extras.pool.name
-: "Unknown Pool";
+try{
 
-html += "#" + blockHeight + " — " + pool + "<br>";
+const r2 = await fetch("https://mempool.space/api/block/" + height);
+const b = await r2.json();
+
+if(b.extras && b.extras.pool && b.extras.pool.name){
+pool = b.extras.pool.name;
+}
+
+}catch(e){}
+
+html += "#" + height + " — " + pool + "<br>";
 
 }
 
 document.getElementById("blocks").innerHTML = html;
 
+}catch(e){
+
+document.getElementById("blocks").innerHTML =
+"block data unavailable";
+
 }
 
+}
 function update(){
 
 loadPrice();
